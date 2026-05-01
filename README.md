@@ -1,2 +1,91 @@
-# Real-Estate-Conversion-Tool
-A streamlined, high-efficiency calculator designed for international real estate investors and professionals. This tool provides instant conversions for area units, real-time currency exchange rates, and localized price-per-unit metrics.
+# 房地產換算神器 · Real Estate Converter
+
+> 專為業務人員設計的迪拜房地產單位換算工具，支援面積三向換算及即時匯率單價計算。
+
+---
+
+## 功能概覽
+
+### 面積換算（三向即時同步）
+任意填入其中一欄，另外兩欄自動計算：
+
+| 單位 | 說明 |
+|------|------|
+| `m²` 平方公尺 (SQM) | 國際標準單位 |
+| `ft²` 平方英尺 (SQFT) | 迪拜市場常用單位 |
+| `坪` (PING) | 台灣習慣單位 |
+
+### 單價計算
+輸入 AED 總價後，自動換算：
+
+- **AED / ft²** — 迪拜市場標準報價方式
+- **TWD / 坪** — 對應台灣客戶的直覺換算
+
+### 即時匯率
+透過 [open.er-api.com](https://open.er-api.com) 取得當日 AED 匯率，支援：
+- AED → USD
+- AED → EUR  
+- AED → TWD
+
+---
+
+## 使用方法
+
+無需安裝、無需伺服器，直接用瀏覽器開啟即可：
+
+```bash
+# 下載後直接開啟
+open 房地產換算神器.html
+```
+
+或雙擊檔案，在任意現代瀏覽器中運行。
+
+> **注意：** 匯率功能需要網路連線。面積換算在離線狀態下仍可正常使用。
+
+---
+
+## 換算公式
+
+```
+1 m²  = 10.7639104 ft²
+1 m²  = 0.3025 坪
+TWD/坪 = (AED 總價 × AED→TWD 匯率) ÷ 坪數
+```
+
+---
+
+## 技術規格
+
+| 項目 | 內容 |
+|------|------|
+| 語言 | 純 HTML / CSS / JavaScript（零依賴）|
+| 匯率 API | open.er-api.com（免費，每24小時更新）|
+| 瀏覽器支援 | Chrome、Edge、Safari、Firefox 現代版本 |
+| 檔案大小 | 單一 `.html` 檔，約 12 KB |
+
+---
+
+## 截圖
+
+> 深色介面，高對比文字，換算單位以色彩標籤區分：
+> - 🔵 藍色 → m²
+> - 🟣 紫色 → ft²
+> - 🟡 金色 → 坪
+> - 🟢 綠色 → AED
+> - 🔴 紅色 → TWD
+
+---
+
+## 目錄結構
+
+```
+.
+└── 房地產換算神器.html   # 主程式（單一檔案，含所有 CSS/JS）
+└── README.md
+```
+
+---
+
+## License
+
+MIT — 自由使用、修改、分發。
