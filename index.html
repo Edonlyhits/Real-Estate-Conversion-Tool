@@ -8,28 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ── BACKGROUNDS (light theme) ── */
             --bg-base:    #f2f4f7;
             --bg-card:    #ffffff;
             --bg-inset:   #eaecf1;
             --bg-badge:   #dde1ea;
             --border:     rgba(0,0,0,0.10);
 
-            /* ── GOLD (slightly deepened for light bg readability) ── */
             --gold:       #c48a00;
             --gold-dim:   rgba(196,138,0,0.10);
             --gold-border:rgba(196,138,0,0.38);
 
-            /* ── TEXT TIERS (inverted for light bg) ── */
-            --txt-white:  #111318;      /* primary values — near black */
-            --txt-bright: #353c50;      /* labels, secondary info */
-            --txt-mid:    #6b7385;      /* tertiary / units */
-            --txt-dim:    #b0b8c8;      /* placeholder, disabled */
+            --txt-white:  #111318;
+            --txt-bright: #353c50;
+            --txt-mid:    #6b7385;
+            --txt-dim:    #b0b8c8;
 
             --accent-red:   #d93030;
             --accent-green: #1a9e72;
 
-            /* ── UNIT BADGES (adjusted for white bg) ── */
             --unit-sqm-bg:   rgba(37,99,235,0.10);
             --unit-sqm-txt:  #2563eb;
             --unit-sqft-bg:  rgba(109,40,217,0.10);
@@ -40,6 +36,10 @@
             --unit-aed-txt:  #0a7c57;
             --unit-twd-bg:   rgba(220,38,38,0.10);
             --unit-twd-txt:  #b91c1c;
+            --unit-usd-bg:   rgba(21,128,61,0.10);
+            --unit-usd-txt:  #166534;
+            --unit-eur-bg:   rgba(30,64,175,0.10);
+            --unit-eur-txt:  #1d4ed8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,21 +50,14 @@
             color: var(--txt-white);
             min-height: 100vh;
             padding: 48px 20px 60px;
-            /* subtle dot grid — dark on light */
             background-image: radial-gradient(circle, rgba(0,0,0,0.055) 1px, transparent 1px);
             background-size: 28px 28px;
         }
 
-        .wrapper {
-            max-width: 560px;
-            margin: 0 auto;
-        }
+        .wrapper { max-width: 560px; margin: 0 auto; }
 
         /* ── HEADER ── */
-        header {
-            text-align: center;
-            margin-bottom: 36px;
-        }
+        header { text-align: center; margin-bottom: 36px; }
         .header-tag {
             display: inline-block;
             font-family: 'IBM Plex Mono', monospace;
@@ -136,17 +129,33 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
         }
-        .section-line {
-            flex: 1;
-            height: 1px;
-            background: var(--border);
+        .section-line { flex: 1; height: 1px; background: var(--border); }
+
+        /* ── CARD 1 HEADER ROW with clear btn ── */
+        .section-title .btn-clear {
+            margin-left: auto;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.62em;
+            letter-spacing: 0.08em;
+            color: var(--txt-mid);
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 3px 9px;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+            flex-shrink: 0;
         }
+        .btn-clear:hover { color: var(--accent-red); border-color: var(--accent-red); }
 
         /* ── INPUT GROUPS ── */
         .flex-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
+        }
+        @media (max-width: 440px) {
+            .flex-row { grid-template-columns: 1fr 1fr; }
         }
         .input-group { position: relative; }
 
@@ -162,7 +171,6 @@
             text-transform: uppercase;
         }
 
-        /* Coloured unit badge inside label */
         .badge {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.85em;
@@ -176,8 +184,10 @@
         .badge-ping { background: var(--unit-ping-bg); color: var(--unit-ping-txt); }
         .badge-aed  { background: var(--unit-aed-bg);  color: var(--unit-aed-txt);  }
         .badge-twd  { background: var(--unit-twd-bg);  color: var(--unit-twd-txt);  }
+        .badge-usd  { background: var(--unit-usd-bg);  color: var(--unit-usd-txt);  }
+        .badge-eur  { background: var(--unit-eur-bg);  color: var(--unit-eur-txt);  }
 
-        input {
+        input[type="number"] {
             width: 100%;
             padding: 11px 13px;
             background: var(--bg-inset);
@@ -191,18 +201,26 @@
             transition: border-color 0.18s, box-shadow 0.18s;
             -moz-appearance: textfield;
         }
-        input::-webkit-inner-spin-button,
-        input::-webkit-outer-spin-button { -webkit-appearance: none; }
-        input::placeholder {
-            color: var(--txt-dim);
-            font-weight: 300;
-        }
-        input:focus {
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+        input[type="number"]::placeholder { color: var(--txt-dim); font-weight: 300; }
+        input[type="number"]:focus {
             border-color: var(--gold-border);
             box-shadow: 0 0 0 3px var(--gold-dim);
         }
+        input[type="number"].input-error {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 3px rgba(217,48,48,0.10);
+        }
+        .error-msg {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.62em;
+            color: var(--accent-red);
+            margin-top: 4px;
+            min-height: 14px;
+            letter-spacing: 0.02em;
+        }
 
-        /* wide input for price */
         .input-wide { margin-bottom: 16px; }
 
         /* ── RATES PANEL ── */
@@ -214,34 +232,58 @@
             margin-top: 4px;
         }
         .rates-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .rates-header-left {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.62em;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--txt-mid);
-            margin-bottom: 10px;
         }
-        #rate-display {
+        .rates-header-right {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            gap: 8px;
         }
+        #rate-timestamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.60em;
+            color: var(--txt-dim);
+        }
+        .btn-refresh {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.60em;
+            letter-spacing: 0.06em;
+            color: var(--txt-mid);
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 2px 8px;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-refresh:hover { color: var(--gold); border-color: var(--gold-border); }
+        .btn-refresh.spinning .refresh-icon { animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .refresh-icon { display: inline-block; }
+
+        #rate-display { display: flex; flex-direction: column; gap: 6px; }
         .rate-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 0.82em;
         }
-        .rate-from {
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--txt-mid);
-        }
+        .rate-from { font-family: 'IBM Plex Mono', monospace; color: var(--txt-mid); }
         .rate-arrow { color: var(--txt-dim); margin: 0 6px; }
-        .rate-to {
-            font-family: 'IBM Plex Mono', monospace;
-            font-weight: 600;
-            color: var(--txt-white);
-        }
+        .rate-to { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--txt-white); }
         .rate-currency { font-weight: 400; color: var(--txt-mid); margin-left: 4px; }
         #rate-display.loading {
             font-family: 'IBM Plex Mono', monospace;
@@ -250,24 +292,77 @@
             font-style: italic;
         }
 
-        /* ── RESULTS ── */
+        /* ── TOTAL CONVERSION TILE ── */
+        .total-tile {
+            background: var(--bg-inset);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px 18px;
+            margin-top: 14px;
+        }
+        .total-tile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .total-tile-label {
+            font-size: 0.6em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--txt-mid);
+            font-weight: 600;
+        }
+        .total-conversions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .total-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .total-amount {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--txt-white);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.15s;
+        }
+        .total-amount:hover { color: var(--gold); }
+        .total-amount.inactive {
+            font-size: 0.75em;
+            color: var(--txt-dim);
+            font-weight: 300;
+            cursor: default;
+        }
+        .total-amount.inactive:hover { color: var(--txt-dim); }
+
+        /* ── RESULTS GRID ── */
         .results-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-top: 14px;
+        }
+        @media (max-width: 440px) {
+            .results-grid { grid-template-columns: 1fr 1fr; }
         }
         .result-tile {
             background: var(--bg-inset);
             border: 1px solid var(--border);
             border-radius: 4px;
-            padding: 18px 16px;
+            padding: 16px 14px;
         }
         .result-tile-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .result-tile-label {
             font-size: 0.6em;
@@ -278,27 +373,54 @@
         }
         .result-val {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.55em;
+            font-size: 1.35em;
             font-weight: 600;
             color: var(--txt-white);
             line-height: 1;
             transition: color 0.2s;
+            cursor: pointer;
         }
+        .result-val:hover { color: var(--gold); }
         .result-val.inactive {
-            font-size: 0.75em;
+            font-size: 0.72em;
             color: var(--txt-dim);
             font-weight: 300;
+            cursor: default;
         }
+        .result-val.inactive:hover { color: var(--txt-dim); }
         .result-unit-row {
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 7px;
         }
         .result-unit-text {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.65em;
             color: var(--txt-mid);
+        }
+
+        /* ── COPY TOAST ── */
+        #copy-toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--txt-white);
+            color: var(--bg-card);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72em;
+            letter-spacing: 0.08em;
+            padding: 7px 18px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 999;
+        }
+        #copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         /* ── FOOTER ── */
@@ -310,6 +432,13 @@
             color: var(--txt-dim);
             letter-spacing: 0.18em;
         }
+        footer a {
+            color: var(--txt-dim);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: color 0.15s;
+        }
+        footer a:hover { color: var(--txt-mid); }
     </style>
 </head>
 <body>
@@ -328,19 +457,23 @@
             <span class="section-num">01</span>
             <span class="section-name">面積換算 &nbsp;·&nbsp; Property Size</span>
             <span class="section-line"></span>
+            <button class="btn-clear" id="btn-clear-all" title="清除所有欄位">✕ 清除</button>
         </div>
         <div class="flex-row">
             <div class="input-group">
                 <label>平方公尺 <span class="badge badge-sqm">m²</span></label>
-                <input type="number" id="input-sqm" placeholder="100">
+                <input type="number" id="input-sqm" placeholder="100" min="0">
+                <div class="error-msg" id="err-sqm"></div>
             </div>
             <div class="input-group">
                 <label>平方英尺 <span class="badge badge-sqft">ft²</span></label>
-                <input type="number" id="input-sqft" placeholder="1076">
+                <input type="number" id="input-sqft" placeholder="1076" min="0">
+                <div class="error-msg" id="err-sqft"></div>
             </div>
             <div class="input-group">
                 <label>坪 <span class="badge badge-ping">坪</span></label>
-                <input type="number" id="input-ping" placeholder="30.25">
+                <input type="number" id="input-ping" placeholder="30.25" min="0">
+                <div class="error-msg" id="err-ping"></div>
             </div>
         </div>
     </div>
@@ -355,21 +488,63 @@
 
         <div class="input-wide">
             <label>總價 <span class="badge badge-aed">AED</span></label>
-            <input type="number" id="input-price-aed" placeholder="1,500,000">
+            <input type="number" id="input-price-aed" placeholder="1500000" min="0">
+            <div class="error-msg" id="err-price"></div>
         </div>
 
         <div class="rates-panel">
-            <div class="rates-header">即時匯率 · Live Rates &nbsp;(Base: 1 AED)</div>
+            <div class="rates-header">
+                <span class="rates-header-left">即時匯率 · Live Rates &nbsp;(Base: 1 AED)</span>
+                <div class="rates-header-right">
+                    <span id="rate-timestamp"></span>
+                    <button class="btn-refresh" id="btn-refresh" title="手動刷新匯率">
+                        <span class="refresh-icon">↺</span> 刷新
+                    </button>
+                </div>
+            </div>
             <div id="rate-display" class="loading">取得匯率中…</div>
         </div>
 
+        <!-- TOTAL CONVERSION (NEW) -->
+        <div class="total-tile" id="total-tile">
+            <div class="total-tile-header">
+                <div class="total-tile-label">總價換算 &nbsp;·&nbsp; Total Price Conversion</div>
+            </div>
+            <div class="total-conversions">
+                <div class="total-row">
+                    <span class="total-amount inactive" id="total-twd" data-raw="">— TWD</span>
+                    <span class="badge badge-twd">新台幣</span>
+                </div>
+                <div class="total-row">
+                    <span class="total-amount inactive" id="total-usd" data-raw="">— USD</span>
+                    <span class="badge badge-usd">美元</span>
+                </div>
+                <div class="total-row">
+                    <span class="total-amount inactive" id="total-eur" data-raw="">— EUR</span>
+                    <span class="badge badge-eur">歐元</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- UNIT PRICE TILES (now 3 cols) -->
         <div class="results-grid">
+            <div class="result-tile">
+                <div class="result-tile-header">
+                    <div class="result-tile-label">每平方公尺</div>
+                    <span class="badge badge-aed">AED</span>
+                </div>
+                <div class="result-val inactive" id="price-per-sqm" data-raw="">—</div>
+                <div class="result-unit-row">
+                    <span class="result-unit-text">per</span>
+                    <span class="badge badge-sqm">m²</span>
+                </div>
+            </div>
             <div class="result-tile">
                 <div class="result-tile-header">
                     <div class="result-tile-label">每平方英尺</div>
                     <span class="badge badge-aed">AED</span>
                 </div>
-                <div class="result-val inactive" id="price-per-sqft">—</div>
+                <div class="result-val inactive" id="price-per-sqft" data-raw="">—</div>
                 <div class="result-unit-row">
                     <span class="result-unit-text">per</span>
                     <span class="badge badge-sqft">ft²</span>
@@ -380,7 +555,7 @@
                     <div class="result-tile-label">每坪</div>
                     <span class="badge badge-twd">TWD</span>
                 </div>
-                <div class="result-val inactive" id="price-per-ping">—</div>
+                <div class="result-val inactive" id="price-per-ping" data-raw="">—</div>
                 <div class="result-unit-row">
                     <span class="result-unit-text">per</span>
                     <span class="badge badge-ping">坪</span>
@@ -389,8 +564,14 @@
         </div>
     </div>
 
-    <footer>AED · USD · EUR · TWD &nbsp;|&nbsp; m² · ft² · 坪 &nbsp;|&nbsp; open.er-api.com</footer>
+    <footer>
+        AED · USD · EUR · TWD &nbsp;|&nbsp; m² · ft² · 坪 &nbsp;|&nbsp;
+        匯率來源：<a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">open.er-api.com</a>
+    </footer>
 </div>
+
+<!-- COPY TOAST -->
+<div id="copy-toast">已複製 ✓</div>
 
 <script>
     const SQM_TO_SQFT = 10.7639104;
@@ -401,18 +582,85 @@
     const elPing        = document.getElementById('input-ping');
     const elPriceAed    = document.getElementById('input-price-aed');
     const elRateDisplay = document.getElementById('rate-display');
-    const elPpSqft      = document.getElementById('price-per-sqft');
-    const elPpPing      = document.getElementById('price-per-ping');
+    const elTimestamp   = document.getElementById('rate-timestamp');
+    const elBtnRefresh  = document.getElementById('btn-refresh');
+    const elBtnClear    = document.getElementById('btn-clear-all');
+    const elCopyToast   = document.getElementById('copy-toast');
+
+    const elPpSqm   = document.getElementById('price-per-sqm');
+    const elPpSqft  = document.getElementById('price-per-sqft');
+    const elPpPing  = document.getElementById('price-per-ping');
+    const elTotTwd  = document.getElementById('total-twd');
+    const elTotUsd  = document.getElementById('total-usd');
+    const elTotEur  = document.getElementById('total-eur');
 
     let rates = { USD: 0, EUR: 0, TWD: 0 };
+    let toastTimer = null;
 
+    // ── COPY TO CLIPBOARD ─────────────────────────────────────────────
+    function copyValue(el) {
+        const raw = el.dataset.raw;
+        if (!raw || el.classList.contains('inactive')) return;
+        navigator.clipboard.writeText(raw).then(() => showToast()).catch(() => {
+            // fallback
+            const ta = document.createElement('textarea');
+            ta.value = raw;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast();
+        });
+    }
+
+    function showToast() {
+        clearTimeout(toastTimer);
+        elCopyToast.classList.add('show');
+        toastTimer = setTimeout(() => elCopyToast.classList.remove('show'), 1600);
+    }
+
+    // attach copy to all result values
+    [elPpSqm, elPpSqft, elPpPing, elTotTwd, elTotUsd, elTotEur].forEach(el => {
+        el.addEventListener('click', () => copyValue(el));
+    });
+
+    // ── INPUT VALIDATION ──────────────────────────────────────────────
+    function validateInput(input, errId) {
+        const errEl = document.getElementById(errId);
+        const val = input.value;
+        if (val === '') { input.classList.remove('input-error'); errEl.textContent = ''; return true; }
+        const num = parseFloat(val);
+        if (isNaN(num)) {
+            input.classList.add('input-error');
+            errEl.textContent = '請輸入有效數字';
+            return false;
+        }
+        if (num < 0) {
+            input.classList.add('input-error');
+            errEl.textContent = '數值不可為負數';
+            return false;
+        }
+        input.classList.remove('input-error');
+        errEl.textContent = '';
+        return true;
+    }
+
+    // ── EXCHANGE RATES ────────────────────────────────────────────────
     async function fetchExchangeRates() {
+        elBtnRefresh.classList.add('spinning');
+        elRateDisplay.classList.add('loading');
+        elRateDisplay.textContent = '取得匯率中…';
+        elTimestamp.textContent = '';
         try {
             const res  = await fetch('https://open.er-api.com/v6/latest/AED');
             const data = await res.json();
             rates.USD = data.rates.USD;
             rates.EUR = data.rates.EUR;
             rates.TWD = data.rates.TWD;
+
+            const now = new Date();
+            const hhmm = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false });
+            elTimestamp.textContent = `更新 ${hhmm}`;
 
             elRateDisplay.classList.remove('loading');
             elRateDisplay.innerHTML = `
@@ -433,17 +681,25 @@
                 </div>`;
             calculateMetrics();
         } catch (err) {
-            elRateDisplay.innerHTML = '<span style="color:#d93030;font-size:0.8em;">匯率取得失敗 — 請檢查網路</span>';
+            elRateDisplay.classList.remove('loading');
+            elRateDisplay.innerHTML = '<span style="color:#d93030;font-size:0.8em;">匯率取得失敗 — 請檢查網路後按刷新</span>';
+            elTimestamp.textContent = '';
             console.error('API Error:', err);
+        } finally {
+            elBtnRefresh.classList.remove('spinning');
         }
     }
 
+    // ── AREA SYNC ────────────────────────────────────────────────────
     function updateArea(source) {
+        const errMap = { 'input-sqm': 'err-sqm', 'input-sqft': 'err-sqft', 'input-ping': 'err-ping' };
+        if (!validateInput(source, errMap[source.id])) { calculateMetrics(); return; }
+
         const val = parseFloat(source.value);
         if (isNaN(val) || val <= 0) {
-            if (source !== elSqm)  elSqm.value  = '';
-            if (source !== elSqft) elSqft.value = '';
-            if (source !== elPing) elPing.value = '';
+            if (source !== elSqm)  { elSqm.value  = ''; }
+            if (source !== elSqft) { elSqft.value = ''; }
+            if (source !== elPing) { elPing.value = ''; }
             calculateMetrics();
             return;
         }
@@ -461,44 +717,94 @@
             elSqm.value  = sqm.toFixed(2);
             elSqft.value = (sqm * SQM_TO_SQFT).toFixed(2);
         }
+        // clear errors on synced fields
+        ['err-sqm','err-sqft','err-ping'].forEach(id => {
+            document.getElementById(id).textContent = '';
+        });
+        [elSqm, elSqft, elPing].forEach(el => el.classList.remove('input-error'));
         calculateMetrics();
     }
 
-    function setResult(el, text, active) {
-        el.textContent = text;
-        if (active) {
-            el.classList.remove('inactive');
-        } else {
-            el.classList.add('inactive');
-        }
+    // ── RESULT HELPERS ───────────────────────────────────────────────
+    function setResult(el, displayText, rawVal, active) {
+        el.textContent = displayText;
+        el.dataset.raw = active ? rawVal : '';
+        if (active) { el.classList.remove('inactive'); }
+        else        { el.classList.add('inactive');    }
     }
 
+    // ── CALCULATE ────────────────────────────────────────────────────
     function calculateMetrics() {
         const priceAed = parseFloat(elPriceAed.value);
+        const sqm      = parseFloat(elSqm.value);
         const sqft     = parseFloat(elSqft.value);
         const ping     = parseFloat(elPing.value);
+        const hasPrice = !isNaN(priceAed) && priceAed > 0;
+        const ratesReady = rates.TWD > 0;
 
-        if (isNaN(priceAed) || priceAed <= 0) {
-            setResult(elPpSqft, '請輸入總價', false);
-            setResult(elPpPing, '請輸入總價', false);
-            return;
-        }
-        if (!isNaN(sqft) && sqft > 0) {
-            setResult(elPpSqft, (priceAed / sqft).toFixed(2), true);
+        // total conversion
+        if (hasPrice && ratesReady) {
+            const twd = Math.round(priceAed * rates.TWD);
+            const usd = (priceAed * rates.USD).toFixed(0);
+            const eur = (priceAed * rates.EUR).toFixed(0);
+            setResult(elTotTwd, `${Number(twd).toLocaleString()} TWD`, String(twd), true);
+            setResult(elTotUsd, `${Number(usd).toLocaleString()} USD`, String(usd), true);
+            setResult(elTotEur, `${Number(eur).toLocaleString()} EUR`, String(eur), true);
         } else {
-            setResult(elPpSqft, '請輸入面積', false);
+            const placeholder = hasPrice ? '載入中…' : '請輸入總價';
+            setResult(elTotTwd, placeholder, '', false);
+            setResult(elTotUsd, placeholder, '', false);
+            setResult(elTotEur, placeholder, '', false);
         }
-        if (!isNaN(ping) && ping > 0 && rates.TWD > 0) {
-            setResult(elPpPing, Math.round((priceAed * rates.TWD) / ping).toLocaleString(), true);
+
+        // per m²
+        if (hasPrice && !isNaN(sqm) && sqm > 0) {
+            const v = (priceAed / sqm).toFixed(2);
+            setResult(elPpSqm, v, v, true);
         } else {
-            setResult(elPpPing, rates.TWD > 0 ? '請輸入面積' : '載入中…', false);
+            setResult(elPpSqm, hasPrice ? '請輸入面積' : '請輸入總價', '', false);
+        }
+
+        // per ft²
+        if (hasPrice && !isNaN(sqft) && sqft > 0) {
+            const v = (priceAed / sqft).toFixed(2);
+            setResult(elPpSqft, v, v, true);
+        } else {
+            setResult(elPpSqft, hasPrice ? '請輸入面積' : '請輸入總價', '', false);
+        }
+
+        // per 坪 (TWD)
+        if (hasPrice && !isNaN(ping) && ping > 0 && ratesReady) {
+            const v = Math.round((priceAed * rates.TWD) / ping).toLocaleString();
+            const raw = String(Math.round((priceAed * rates.TWD) / ping));
+            setResult(elPpPing, v, raw, true);
+        } else {
+            const msg = !ratesReady ? '載入中…' : (hasPrice ? '請輸入面積' : '請輸入總價');
+            setResult(elPpPing, msg, '', false);
         }
     }
 
+    // ── CLEAR ALL ────────────────────────────────────────────────────
+    elBtnClear.addEventListener('click', () => {
+        [elSqm, elSqft, elPing, elPriceAed].forEach(el => {
+            el.value = '';
+            el.classList.remove('input-error');
+        });
+        ['err-sqm','err-sqft','err-ping','err-price'].forEach(id => {
+            document.getElementById(id).textContent = '';
+        });
+        calculateMetrics();
+    });
+
+    // ── EVENTS ───────────────────────────────────────────────────────
     elSqm.addEventListener('input',      () => updateArea(elSqm));
     elSqft.addEventListener('input',     () => updateArea(elSqft));
     elPing.addEventListener('input',     () => updateArea(elPing));
-    elPriceAed.addEventListener('input', calculateMetrics);
+    elPriceAed.addEventListener('input', () => {
+        validateInput(elPriceAed, 'err-price');
+        calculateMetrics();
+    });
+    elBtnRefresh.addEventListener('click', fetchExchangeRates);
 
     window.onload = fetchExchangeRates;
 </script>
